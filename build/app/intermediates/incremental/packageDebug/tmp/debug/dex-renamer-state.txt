@@ -1,4 +1,0 @@
-#Mon Jul 17 19:12:22 IDT 2023
-base.0=/Users/alexanderbalasanov/Documents/fuse_wallet/build/app/intermediates/dex/debug/mergeDexDebug/classes.dex
-renamed.0=classes.dex
-path.0=classes.dex
