@@ -27,6 +27,7 @@ class FwMainModel extends FwModel {
   late FwAddAddressModel addAddressModel ;
   late FwBalanceModel balanceModel ;
   late FwTokenDetailsModel tokenDetailsModel ;
+  bool _refreshStarted = false ;
   factory FwMainModel(){
     return _instance ;
   }
@@ -52,14 +53,57 @@ class FwMainModel extends FwModel {
      await resources.load();
      navigate(FwApplicationStates.addWalletAddressState);
    }
+   else {
+     _stopRefresh() ;
+   }
   }
+
+
 
   navigate(FwApplicationStates state) {
     update(callback: (){
+
+      if(_currentPage == FwApplicationStates.addWalletAddressState && state == FwApplicationStates.balanceState){
+        _startRefresh() ;
+      }
+      else if(state == FwApplicationStates.addWalletAddressState){
+        _stopRefresh() ;
+      }
+
       _currentPage = state ;
     });
   }
 
+  _startRefresh() {
+    if(!_refreshStarted){
+      _refreshStarted = true ;
+      _refresh();
+    }
+  }
+
+  _refresh({int timeout = 5}) async{
+    await Future.delayed( Duration(seconds: timeout)) ;
+    if(_refreshStarted) {
+      var state = await balanceModel.updateBalance();
+      if(state){
+        if(_currentPage == FwApplicationStates.balanceState) {
+          balanceModel.update() ;
+        }
+        else if(_currentPage == FwApplicationStates.detailsState) {
+          tokenDetailsModel.update() ;
+        }
+      }
+      if(_refreshStarted) {
+        await _refresh(timeout: state ? 5 : 10);
+      }
+    }
+  }
+
+  _stopRefresh() {
+    if(_refreshStarted){
+      _refreshStarted = false ;
+    }
+  }
 }
 
 FwMainModel applicationModel = FwMainModel();

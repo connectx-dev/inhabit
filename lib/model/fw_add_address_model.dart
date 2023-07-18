@@ -4,6 +4,8 @@ import 'package:fuse_wallet/model/fw_model.dart';
 import 'package:fuse_wallet/server/fw_response.dart';
 
 import '../server/fw_server_api.dart';
+import '../ui/base/fw_base_state.dart';
+import '../ui/base/fw_base_widget.dart';
 
 class FwAddAddressModel extends FwModel {
 
@@ -33,12 +35,20 @@ class FwAddAddressModel extends FwModel {
         if (balance.isValid) {
           applicationModel.balanceModel.currentBalance = balance;
           applicationModel.navigate(FwApplicationStates.balanceState);
+
         }
         _comminicationInProgress = false;
       });
     });
-
   };
+
+  @override
+  setState(FwBaseState<FwBaseWidget>? state) {
+     super.setState(state);
+     if(state != null){
+       _address = "" ;
+     }
+  }
 
 
 }

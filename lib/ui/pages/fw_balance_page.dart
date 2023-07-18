@@ -109,16 +109,12 @@ class _FwBalanceWidgetState extends FwBaseState<FwBalanceWidget> {
                               padding: const EdgeInsets.only(left: 4),
                               child: Text(applicationModel.balanceModel.balanceProcents,
                                   style: TextStyle(
-                                    color: const Color(0xFF1FE000),
+                                    color: Colors.black,
                                     fontSize: alignByY(20),
                                     fontFamily: 'Montserrat',
                                     fontWeight: FontWeight.w500,
                                   ))).applyConstraint(id: procentIdLabel, left: sumIdLabel.right, top: parent.top, bottom: parent.bottom),
-                          Icon(
-                            applicationModel.balanceModel.balanceUp ? Icons.arrow_upward : Icons.arrow_downward,
-                            color: const Color(0xFF1FE000),
-                            size: alignByY(18),
-                          ).applyConstraint(left: procentIdLabel.right, top: procentIdLabel.top, bottom: procentIdLabel.bottom, height: matchConstraint),
+
                         ],
                       ),
                     ),
@@ -295,7 +291,7 @@ class _FwBalanceWidgetState extends FwBaseState<FwBalanceWidget> {
                                 )))),
                   ],
                 ))),
-        Positioned(
+    Visibility(visible:applicationModel.balanceModel.tokensCount > 0, child:Positioned(
             top: alignByY(367),
             width: width,
             height: alignByY(applicationModel.balanceModel.isShowMore ? 450 : 367),
@@ -326,7 +322,7 @@ class _FwBalanceWidgetState extends FwBaseState<FwBalanceWidget> {
                         left: alignByX(24),
                         top: alignByY(60),
                         width: width - alignByX(24) * 2,
-                        height: alignByY(applicationModel.balanceModel.isShowMore ? 300 : 240),
+                        height: alignByY(applicationModel.balanceModel.isShowMore ? 315 : 240),
                         child: ListView.builder(
                           itemCount: applicationModel.balanceModel.tokensCount,
                           itemBuilder: (BuildContext context, int index) => tokenRow(context, index),
@@ -365,7 +361,7 @@ class _FwBalanceWidgetState extends FwBaseState<FwBalanceWidget> {
                                   ],
                                 ))))
                   ],
-                ))),
+                )))),
       ],
     );
   }
@@ -417,7 +413,7 @@ class _FwBalanceWidgetState extends FwBaseState<FwBalanceWidget> {
               Padding(
                   padding: EdgeInsets.only(right: alignByX(20)),
                   child: Text(
-                    "\$${token.priceInUsb}",
+                    "${token.priceInUsb}",
                     textAlign: TextAlign.start,
                     style: TextStyle(
                       color: Colors.black,

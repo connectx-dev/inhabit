@@ -1,6 +1,7 @@
 import 'dart:ffi';
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
 import 'package:fuse_wallet/utils/fw_resources.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:number_system/number_system.dart';
@@ -19,7 +20,7 @@ class FwTokenListItem {
   @JsonKey(includeToJson: false)
   FwTokenTotalSupply? tokensTotalSupply ;
 
-  get priceInUsb => "35";
+  get priceInUsb => calculatedBalance;
 
   num get calculatedBalance {
     num mod = pow(10.0, int.parse(decimals!));
@@ -59,7 +60,56 @@ class FwBalance {
   @JsonKey(includeToJson: false)
   String address = "" ;
 
-  String get balance => BigInt.parse(result!).toString() ;
+  String calculatePoints(String number,String realPart){
+    String numberFormatted = "";
+    do {
+      if (realPart.length > 3) {
+        if(numberFormatted.isEmpty) {
+          numberFormatted = realPart.substring(realPart.length - 3);
+        }
+        else {
+          numberFormatted = "${realPart.substring(realPart.length - 3)},$numberFormatted" ;
+        }
+        realPart = realPart.substring(0,realPart.length - 3) ;
+      }
+      else {
+        numberFormatted = "$realPart,$numberFormatted" ;
+        break ;
+      }
+    } while (number.length > 3);
+    return numberFormatted  ;
+  }
+
+  String get balance {
+    String number =  BigInt.parse(result!).toString() ;
+    String decimalPart = "" ;
+
+    if(number.length > 18){
+      decimalPart = number.substring(number.length - 18);
+      if(double.parse(decimalPart) == 0){
+        number = number.substring(0,number.length - 18) ;
+      }
+    }
+    String realPart = "" ;
+    if(number.length > 18){
+      decimalPart = number.substring(number.length - 18) ;
+      realPart    = number.substring(0,number.length - 18) ;
+      String numberFormatted = calculatePoints(number,realPart);
+      return "$numberFormatted.$decimalPart"  ;
+    }
+    else {
+      realPart    = number ;
+      String numberFormatted = calculatePoints(number,realPart);
+      String clearNum = numberFormatted.replaceAll(",", "");
+      if(clearNum.length < number.length){
+        decimalPart = number.substring(number.length - clearNum.length) ;
+        return "$numberFormatted.$decimalPart"  ;
+      }
+      else {
+        return numberFormatted ;
+      }
+    }
+  }
 
   bool get isValid => result!=null && result!.isNotEmpty ;
 

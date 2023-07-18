@@ -1,8 +1,10 @@
 
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:fuse_wallet/model/fw_main_model.dart';
 import 'package:fuse_wallet/model/fw_model.dart';
 import 'package:fuse_wallet/server/fw_response.dart';
+
+import '../server/fw_server_api.dart';
 
 
 
@@ -13,7 +15,7 @@ class FwBalanceModel extends FwModel{
 
   get balanceUp => true;
 
-  String get balanceProcents => "+0";
+  String get balanceProcents => "Fuse";
   bool _showMore = false ;
   bool get isShowMore => _showMore ;
 
@@ -68,5 +70,17 @@ class FwBalanceModel extends FwModel{
     applicationModel.tokenDetailsModel.token = token ;
     applicationModel.navigate(FwApplicationStates.detailsState) ;
   }
+
+  Future<bool> updateBalance() async{
+    _balance = await fuseServer.loadBalance(fullAddress) ;
+    if (kDebugMode) {
+      print("Balance update state = ${_balance?.isValid??false}") ;
+
+    }return  _balance?.isValid??false ;
+  }
+
+
+
+
 
 }
