@@ -37,8 +37,6 @@ class FwApp extends StatelessWidget {
         LocalJsonLocalization.delegate
       ],
 
-
-      
       theme: ThemeData(
         // This is the theme of your application.
         //
