@@ -72,11 +72,17 @@ class FwBalanceModel extends FwModel{
   }
 
   Future<bool> updateBalance() async{
-    _balance = await fuseServer.loadBalance(fullAddress) ;
+   FwBalance? balance = await fuseServer.loadBalance(fullAddress) ;
     if (kDebugMode) {
-      print("Balance update state = ${_balance?.isValid??false}") ;
+      print("Balance update state = ${balance?.isValid??false}") ;
 
-    }return  _balance?.isValid??false ;
+    }
+
+    if(balance.isValid){
+      _balance = balance ;
+    }
+
+    return  _balance?.isValid??false ;
   }
 
 

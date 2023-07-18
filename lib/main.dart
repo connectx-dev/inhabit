@@ -66,17 +66,32 @@ class FwHomePage extends FwBaseWidget {
   State<FwHomePage> createState() => _FwHomePageState();
 }
 
-class _FwHomePageState extends FwBaseState<FwHomePage> {
+class _FwHomePageState extends FwBaseState<FwHomePage> with WidgetsBindingObserver {
 
   @override
   void initState() {
     super.initState();
+
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+
     applicationModel.setState(this) ;
+    WidgetsBinding.instance.addObserver(this);
   }
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     applicationModel.setState(null) ;
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    applicationModel.didChangeAppLifecycleState(state);
+
   }
 
   @override
