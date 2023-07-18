@@ -1,0 +1,25 @@
+{
+  "add_wallet_address" : "Add Wallet Address",
+  "enter_or_copy_wallet_address": "Enter or copy wallet address",
+  "continue" : "Continue",
+  "wallet": "Wallet",
+  "your_balance": "Your balance",
+  "receive" : "Receive",
+  "your_coins" : "Your Coins",
+  "show_more" : "Show More",
+  "details" : "Details",
+  "voltage" : "Voltage",
+  "name" : "Name",
+  "total_supply" : "Total Supply",
+  "decimals" : "Decimals",
+  "your_public_address": "Your Public Address",
+  "make_sure_sending": "Please make sure you are sending\nassets on the Fuse network",
+  "close": "Close",
+  "cancel" : "Cancel",
+  "symbol" : "Symbol",
+  "balance" : "Balance",
+  "type" : "Type",
+  "contractAddress" : "Contract address",
+  "show_less" : "Show Less"
+
+}
